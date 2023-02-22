@@ -25,6 +25,7 @@ will be implemented in PostgreSQL using the BJSON for drawing data. Communicatio
 will be managed using websockets with the frontend application
 
 #### Tables 
+![Database Diagram](./images/db_diagram.png)
 
 ### Frontend
 

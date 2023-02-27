@@ -1,8 +1,7 @@
-<h1>Show Game</h1>
+<section class="row">
+  <article class="column">
+    <h1>Welcome to game <%= String.upcase @game.code %></h1>
 
-<ul>
-
-</ul>
-
-<span><%= link "Edit", to: Routes.game_path(@conn, :edit, @game) %></span> |
-<span><%= link "Back", to: Routes.game_path(@conn, :index) %></span>
+ 
+  </article>
+</section>

@@ -59,5 +59,10 @@ defmodule Drawtoo.GamesTest do
       game = game_fixture()
       assert %Ecto.Changeset{} = Games.change_game(game)
     end
+
+    test "generate_game_code/1 returns a unique game code" do
+      game = game_fixture()
+      assert game.code != Games.generate_game_code()
+    end
   end
 end

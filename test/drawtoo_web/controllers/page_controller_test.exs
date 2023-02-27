@@ -1,8 +1,10 @@
 defmodule DrawtooWeb.PageControllerTest do
   use DrawtooWeb.ConnCase
 
-  test "GET /", %{conn: conn} do
-    conn = get(conn, "/")
-    assert html_response(conn, 200) =~ "Welcome to Phoenix!"
+  describe "homepage " do
+    test "should show the create game form ", %{conn: conn} do
+      response = get(conn, Routes.page_path(conn, :index))
+      assert html_response(response, 200) =~ "Enter your name"
+    end
   end
 end

@@ -16,7 +16,8 @@ defmodule DrawtooWeb.Router do
 
   scope "/", DrawtooWeb do
     pipe_through :browser
-    resources "/games", Games.GameController
+    post "/games", Games.GameController, :new
+    get "/games/:code", Games.GameController, :show
     get "/", PageController, :index
   end
 

@@ -1,6 +1,7 @@
 // We import the CSS which is extracted to its own file by esbuild.
 // Remove this line if you add a your own CSS build pipeline (e.g postcss).
 import "../css/app.css"
+import "./drawing/app.js"
 
 // If you want to use Phoenix channels, run `mix help phx.gen.channel`
 // to get started and then uncomment the line below.
@@ -47,7 +48,8 @@ console.clear();
 
 const loginBtn = document.getElementById('login');
 
-loginBtn.addEventListener('click', (e) => {
+if (loginBtn != null ){
+    loginBtn.addEventListener('click', (e) => {
 	let parent = e.target.parentNode.parentNode;
 	Array.from(e.target.parentNode.parentNode.classList).find((element) => {
 		if(element !== "slide-up") {
@@ -57,4 +59,5 @@ loginBtn.addEventListener('click', (e) => {
 			parent.classList.remove('slide-up')
 		}
 	});
-});
+    });
+}

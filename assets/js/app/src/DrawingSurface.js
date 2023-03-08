@@ -1,12 +1,24 @@
 import React, { Component } from "react"
 import {render}  from "react-dom"
-import socketIOClient from "socket.io-client";
+import {Socket} from "phoenix"
 
 class DrawingSurface extends Component {
+    getRoomCode(){
+        let appRoot = document.getElementById('App')
+        return appRoot.getAttribute('data-room-code')
+
+    }
 
     componentDidMount(){
 
-        this.state.socket = socketIOClient('ws://0.0.0.0:5000/');
+        this.state.socket = new Socket("/drawing", {params: {token: window.userToken}})
+        this.state.socket.connect()
+        this.state.channel = this.state.socket.channel("room:" + this.getRoomCode(), {})
+        this.state.channel.join()
+            .receive("ok", resp => { console.log("Joined successfully", resp) })
+            .receive("error", resp => { console.log("Unable to join", resp) })
+
+
         const Atrament = require('atrament');
         this.state.sketchpad = new Atrament(
             this.state.canvas.current,
@@ -16,10 +28,10 @@ class DrawingSurface extends Component {
                 color:this.state.color,
             }
         );
-        this.state.socket.emit('sketchpad_initialize');
+        this.state.channel.push('sketchpad_initialize');
         this.state.sketchpad.recordStrokes = true;
         this.state.sketchpad.addEventListener('strokerecorded', ({stroke}) => {
-            this.state.socket.emit('sketchpad_status',  {
+            this.state.channel.push('sketchpad_status',  {
                 data: {
                     stroke: stroke,
                     color: this.state.sketchpad.color,
@@ -28,7 +40,7 @@ class DrawingSurface extends Component {
             });
         });
         this.state.sketchpad.addEventListener('fillstart', ({x,y}) => {
-            this.state.socket.emit('sketchpad_fill',  {
+            this.state.channel.push('sketchpad_fill',  {
                 data: {
                     x: x,
                     y: y,
@@ -37,11 +49,11 @@ class DrawingSurface extends Component {
                 }
             });
         });
-        this.state.socket.on("sketchpad_content_clear", data => {
+        this.state.channel.on("sketchpad_content_clear", data => {
             this.state.sketchpad.clear();
 
         });
-        this.state.socket.on("sketchpad_content_update", data => {
+        this.state.channel.on("sketchpad_content_update", data => {
             this.state.sketchpad.recordStrokes = false;
 
 
@@ -64,7 +76,7 @@ class DrawingSurface extends Component {
             this.state.sketchpad.recordStrokes = true;
             this.state.sketchpad.color = oldcolor;
         });
-        this.state.socket.on("sketchpad_content_fill", data => {
+        this.state.channel.on("sketchpad_content_fill", data => {
             this.state.sketchpad.recordStrokes = false;
 
             let oldcolor = this.state.sketchpad.color ;
@@ -92,7 +104,7 @@ class DrawingSurface extends Component {
 
     clearCanvas(props) {
         this.state.sketchpad.clear();
-        this.state.socket.emit('sketchpad_clear',  {} );
+        this.state.channel.push('sketchpad_clear',  {} );
     }
     pickColor(props){
         this.state.sketchpad.color = props.target.value;

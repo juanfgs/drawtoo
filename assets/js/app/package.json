@@ -14,9 +14,10 @@
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
     "atrament": "^1.2.0",
+    "esbuild": "^0.17.10",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-scripts": "3.4.3",
+    "react-scripts": "^5.0.1",
     "socket.io": "^2.3.0",
     "socket.io-client": "^2.3.0"
   },

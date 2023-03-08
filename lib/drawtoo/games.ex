@@ -54,6 +54,22 @@ defmodule Drawtoo.Games do
   def get_game_by_code!(code), do: Repo.get_by!(Game, code: String.downcase(code))
 
   @doc """
+  Gets a single game.
+
+  Raises `Ecto.NoResultsError` if the Game does not exist.
+
+  ## Examples
+
+      iex> get_game!(123)
+      %Game{}
+
+      iex> get_game!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_game_by_code(code), do: Repo.get_by(Game, code: String.downcase(code))
+
+  @doc """
   Returns a boolean indicating if the game with the given game code already exists.
 
 

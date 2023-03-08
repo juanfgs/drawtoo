@@ -54,6 +54,7 @@ class DrawingSurface extends Component {
 
         });
         this.state.channel.on("sketchpad_content_update", data => {
+            console.log(data)
             this.state.sketchpad.recordStrokes = false;
 
 

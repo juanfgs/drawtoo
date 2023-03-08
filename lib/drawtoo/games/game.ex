@@ -9,7 +9,7 @@ defmodule Drawtoo.Games.Game do
     field :code, :string
     field :round_time, :integer
     field :number_of_rounds, :integer
-
+    has_one :canvas, Drawtoo.Canvasses.Canvas, foreign_key: :game_id
     timestamps()
   end
 

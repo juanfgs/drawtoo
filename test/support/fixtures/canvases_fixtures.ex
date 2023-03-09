@@ -1,7 +1,7 @@
-defmodule Drawtoo.CanvasesFixtures do
+defmodule Drawtoo.CanvassesFixtures do
   @moduledoc """
   This module defines test helpers for creating
-  entities via the `Drawtoo.Canvases` context.
+  entities via the `Drawtoo.Canvasses` context.
   """
 
   @doc """
@@ -13,7 +13,7 @@ defmodule Drawtoo.CanvasesFixtures do
       |> Enum.into(%{
         strokes: []
       })
-      |> Drawtoo.Canvases.create_canvas()
+      |> Drawtoo.Canvasses.create_canvas()
 
     canvas
   end

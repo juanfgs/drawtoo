@@ -51,4 +51,8 @@ defmodule DrawtooWeb.Endpoint do
   plug Plug.Head
   plug Plug.Session, @session_options
   plug DrawtooWeb.Router
+
+  if Application.get_env(:drawtoo, :sql_sandbox) do
+    plug Phoenix.Ecto.SQL.Sandbox
+  end
 end

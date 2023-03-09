@@ -28,3 +28,11 @@ config :logger, level: :warn
 
 # Initialize plugs at runtime for faster test compilation
 config :phoenix, :plug_init_mode, :runtime
+
+config :drawtoo, DrawtooWeb.Endpoint,
+  http: [port: 4002],
+  server: true
+
+# Configure Hound
+config :hound, driver: "chrome_driver", browser: "chrome_headless"
+config :drawtoo, sql_sandbox: true

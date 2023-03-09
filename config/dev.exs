@@ -26,7 +26,8 @@ config :drawtoo, DrawtooWeb.Endpoint,
   secret_key_base: "Bu7Gph/Y/uRs82vM0pmlKFgBRcJREnTDyQm4sMVKMH/cKvfr8Kb68u0A7lCnFCwB",
   watchers: [
     # Start the esbuild watcher by calling Esbuild.install_and_run(:default, args)
-    esbuild_application: {Esbuild, :install_and_run, [:drawing_application, ~w(--sourcemap=inline --watch)]},
+    esbuild_application:
+      {Esbuild, :install_and_run, [:drawing_application, ~w(--sourcemap=inline --watch)]},
     esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]}
   ]
 

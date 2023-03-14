@@ -7,7 +7,17 @@
 		<div class="center">
 			<h2 class="form-title" id="login">Create your room</h2>
 			<div class="form-holder">
-              <%= text_input f, :user_name, placeholder: gettext "Enter your name" %>
+              <label>Player name</label>
+              <%= text_input f, :user_name, placeholder: gettext "Enter your name"%>
+
+              <label>Maximum players</label>
+              <%= number_input f, :max_players, value: 4 ,placeholder: gettext "Enter Maximum players" %>
+
+              <label>Round time</label>
+              <%= number_input f, :round_time,value: 120, placeholder: gettext "Enter Round Time" %>
+
+              <label>Number of rounds</label>
+              <%= number_input f, :number_of_rounds, value: 6,  placeholder: gettext "Enter number of rounds" %>
 			</div>
 			<button class="submit-btn"><%= gettext "Create your room" %></button>
 		</div>

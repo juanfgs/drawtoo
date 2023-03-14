@@ -1,0 +1,18 @@
+<section class="row">
+
+  <article class="column">
+    <div class="form-structor">
+    <%= form_for @conn.params, Routes.game_path(@conn, :join, @game.code), fn f ->  %>
+	<div class="login slide-up">
+		<div class="center">
+			<h2 class="form-title" id="login"><%= gettext "Join room "%></h2>
+			<div class="form-holder">
+              <%= text_input f, :user_name, placeholder: gettext "Enter your name" %>
+			</div>
+			<button class="submit-btn"><%= gettext "Join Room " %> <%= String.upcase(@game.code) %></button>
+		</div>
+	</div>
+    <% end %>
+</div>
+   </article> 
+</section>

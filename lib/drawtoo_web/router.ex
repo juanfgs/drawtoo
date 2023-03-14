@@ -18,6 +18,8 @@ defmodule DrawtooWeb.Router do
     pipe_through :browser
     post "/games", Games.GameController, :new
     get "/games/:code", Games.GameController, :show
+    get "/games/join/:code", Games.GameController, :join
+    post "/games/join/:code", Games.GameController, :join_post
     get "/", PageController, :index
   end
 

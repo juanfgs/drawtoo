@@ -9,14 +9,17 @@ defmodule Drawtoo.Games.Game do
     field :code, :string
     field :round_time, :integer
     field :number_of_rounds, :integer
+    field :max_players, :integer
+    field :current_turn, :integer, default: 0
     has_one :canvas, Drawtoo.Canvasses.Canvas, foreign_key: :game_id
+    has_many :users, Drawtoo.Users.User
     timestamps()
   end
 
   @doc false
   def changeset(game, attrs) do
     game
-    |> cast(attrs, [:code, :round_time, :number_of_rounds])
+    |> cast(attrs, [:code, :max_players, :current_turn, :round_time, :number_of_rounds])
     |> validate_required([:code])
   end
 

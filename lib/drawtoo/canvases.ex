@@ -7,6 +7,7 @@ defmodule Drawtoo.Canvasses do
   alias Drawtoo.Repo
 
   alias Drawtoo.Canvasses.Canvas
+  require Logger
 
   @doc """
   Returns the list of canvases.
@@ -67,10 +68,10 @@ defmodule Drawtoo.Canvasses do
       {:error, %Ecto.Changeset{}}
 
   """
-  def update_canvas(%Canvas{} = canvas, attrs) do
+  def update_canvas!(%Canvas{} = canvas, attrs) do
     canvas
     |> Canvas.changeset(attrs)
-    |> Repo.update()
+    |> Repo.update!()
   end
 
   @doc """
@@ -104,7 +105,7 @@ defmodule Drawtoo.Canvasses do
 
   def append_stroke(%Canvas{strokes: []} = canvas, stroke) do
     canvas
-    |> update_canvas(%{strokes: [stroke]})
+    |> update_canvas!(%{strokes: [stroke]})
   end
 
   def append_stroke(%Canvas{strokes: strokes} = canvas, stroke) do
@@ -113,7 +114,7 @@ defmodule Drawtoo.Canvasses do
           do: %{data: stroke.data}
 
     canvas
-    |> update_canvas(%{
+    |> update_canvas!(%{
       strokes: strokes ++ [stroke]
     })
     |> Repo.reload!()

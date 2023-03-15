@@ -24,7 +24,7 @@ defmodule DrawtooWeb.DrawingChannel do
       ) do
     Logger.info("Initializing empty canvas")
 
-    {:ok, canvas} = Canvasses.create_canvas(%{game_id: game.id})
+    {:ok, canvas} = Canvasses.create_canvas(%{game_id: game.id, strokes: []})
 
     {:reply, {:ok, payload},
      socket
@@ -35,12 +35,10 @@ defmodule DrawtooWeb.DrawingChannel do
   def handle_in("sketchpad_initialize", payload, socket) do
     Logger.info("Initializing sketchpad")
     Logger.info(inspect(payload))
+    Logger.info(inspect(socket.assigns.game.canvas.strokes))
 
-    socket.assigns.game.canvas.strokes
-    |> Enum.each(fn stroke ->
-      socket
-      |> broadcast("sketchpad_content_update", %{data: stroke.data})
-    end)
+    socket
+    |> broadcast("sketchpad_content_update", %{data: socket.assigns.game.canvas.strokes})
 
     {:reply, {:ok, payload}, socket}
   end
@@ -48,9 +46,18 @@ defmodule DrawtooWeb.DrawingChannel do
   @impl true
   def handle_in("sketchpad_status", %{"data" => data} = payload, socket) do
     Logger.info("Sketchpad status update")
+    Logger.info(inspect(socket))
 
     socket.assigns.game.canvas
     |> Canvasses.append_stroke(%{data: data})
+
+    socket.assigns.game.canvas.strokes
+    |> Enum.each(fn stroke ->
+      socket
+      |> broadcast("sketchpad_content_update", %{
+        data: socket.assigns.game.canvas.strokes
+      })
+    end)
 
     {:reply, {:ok, payload}, socket}
   end

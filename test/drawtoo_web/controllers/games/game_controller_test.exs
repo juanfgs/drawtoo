@@ -22,6 +22,19 @@ defmodule DrawtooWeb.Games.GameControllerTest do
                "Share this code with your friends to let them join this game"
     end
 
+    test "if the user doesn't introduce their name it should raise an error", %{conn: conn} do
+      navigate_to("http://localhost:4002")
+
+      element = find_element(:id, "user_name")
+
+      submit_element(element)
+
+      share_game = find_element(:css, ".alert-danger")
+
+      assert inner_text(share_game) =~
+               "name : can't be blank"
+    end
+
     test "joining a game through a game link should display " do
       navigate_to("http://localhost:4002/")
 

@@ -24,12 +24,21 @@ defmodule DrawtooWeb.Games.GameController do
         number_of_rounds: number_of_rounds
       })
 
-    {:ok, _user} = Users.create_user(%{name: username, game_id: game.id})
+    case Users.create_user(%{name: username, game_id: game.id}) do
+      {:ok, _user} ->
+        game_path = Routes.game_path(conn, :show, String.upcase(game.code))
 
-    game_path = Routes.game_path(conn, :show, String.upcase(game.code))
+        conn
+        |> redirect(to: game_path)
 
-    conn
-    |> redirect(to: game_path)
+      {:error, %Ecto.Changeset{errors: [{field, {message, _}}]}} ->
+        # We no longer need this game
+        Games.delete_game(game)
+
+        conn
+        |> put_flash(:error, "#{field} : #{message}")
+        |> redirect(to: Routes.page_path(conn, :index))
+    end
   end
 
   def show(conn, %{"code" => code}) do

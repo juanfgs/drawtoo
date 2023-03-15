@@ -76,6 +76,7 @@ defmodule Drawtoo.Games do
       Repo.get_by(Game, code: String.downcase(code))
       |> Repo.preload(:canvas)
       |> Repo.preload(:users)
+      |> Repo.preload(canvas: :strokes)
 
   @doc """
   Returns a boolean indicating if the game with the given game code already exists.

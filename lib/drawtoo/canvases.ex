@@ -7,6 +7,7 @@ defmodule Drawtoo.Canvasses do
   alias Drawtoo.Repo
 
   alias Drawtoo.Canvasses.Canvas
+  alias Drawtoo.Strokes.Stroke
   require Logger
 
   @doc """
@@ -103,20 +104,7 @@ defmodule Drawtoo.Canvasses do
     Canvas.changeset(canvas, attrs)
   end
 
-  def append_stroke(%Canvas{strokes: []} = canvas, stroke) do
-    canvas
-    |> update_canvas!(%{strokes: [stroke]})
-  end
-
-  def append_stroke(%Canvas{strokes: strokes} = canvas, stroke) do
-    strokes =
-      for stroke <- strokes,
-          do: %{data: stroke.data}
-
-    canvas
-    |> update_canvas!(%{
-      strokes: strokes ++ [stroke]
-    })
-    |> Repo.reload!()
+  def append_stroke(%Canvas{} = canvas, %{data: data}) do
+    Repo.insert(%Stroke{canvas_id: canvas.id, data: data})
   end
 end

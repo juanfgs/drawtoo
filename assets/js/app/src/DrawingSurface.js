@@ -8,6 +8,13 @@ class DrawingSurface extends Component {
         return appRoot.getAttribute('data-room-code')
 
     }
+    getUserId(){
+        let appRoot = document.getElementById('App')
+        return appRoot.getAttribute('data-user-id')
+
+    }
+
+
 
     componentDidMount(){
 
@@ -55,27 +62,30 @@ class DrawingSurface extends Component {
         });
         this.state.channel.on("sketchpad_content_update", data => {
             console.log(data)
-            this.state.sketchpad.recordStrokes = false;
+            data.data.forEach(function(stroke){
+                this.state.sketchpad.recordStrokes = false;
 
+                let oldcolor = this.state.sketchpad.color ;
+                const points = stroke.data.stroke.points.slice();
+                const firstPoint = points.shift();
 
-            let oldcolor = this.state.sketchpad.color ;
-            const points = data.data.stroke.points.slice();
-            const firstPoint = points.shift();
-
-            this.state.sketchpad.color = data.data.color;
-            this.state.sketchpad.color = data.data.mode;
-            this.state.sketchpad.beginStroke(firstPoint.x, firstPoint.y);
+                console.log(stroke.data.stroke.points)
+                this.state.sketchpad.color = stroke.data.color;
+                this.state.sketchpad.color = stroke.data.mode;
+                this.state.sketchpad.beginStroke(firstPoint.x, firstPoint.y);
              
-             let prevPoint = firstPoint;
-             while (points.length > 0) {
-                 const point = points.shift();
-                 const { x, y } = this.state.sketchpad.draw(point.x, point.y, prevPoint.x, prevPoint.y);
-                 prevPoint = { x, y };
-             }
-             // endStroke closes the path
-            this.state.sketchpad.endStroke(prevPoint.x, prevPoint.y);
-            this.state.sketchpad.recordStrokes = true;
-            this.state.sketchpad.color = oldcolor;
+                let prevPoint = firstPoint;
+                while (points.length > 0) {
+                    const point = points.shift();
+                    const { x, y } = this.state.sketchpad.draw(point.x, point.y, prevPoint.x, prevPoint.y);
+                    prevPoint = { x, y };
+                }
+                // endStroke closes the path
+                this.state.sketchpad.endStroke(prevPoint.x, prevPoint.y);
+                this.state.sketchpad.recordStrokes = true;
+                this.state.sketchpad.color = oldcolor;
+
+            },this);
         });
         this.state.channel.on("sketchpad_content_fill", data => {
             this.state.sketchpad.recordStrokes = false;

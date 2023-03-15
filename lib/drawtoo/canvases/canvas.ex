@@ -4,9 +4,10 @@ defmodule Drawtoo.Canvasses.Canvas do
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
-  @derive {Jason.Encoder, only: [:strokes]}
+
   schema "canvases" do
-    embeds_many :strokes, Drawtoo.Canvasses.Stroke, on_replace: :delete
+    @derive Jason.Encoder
+    has_many :strokes, Drawtoo.Strokes.Stroke
     field :game_id, :binary_id
 
     timestamps()
@@ -16,6 +17,6 @@ defmodule Drawtoo.Canvasses.Canvas do
   def changeset(canvas, attrs) do
     canvas
     |> cast(attrs, [:game_id])
-    |> cast_embed(:strokes)
+    |> cast_assoc(:strokes)
   end
 end

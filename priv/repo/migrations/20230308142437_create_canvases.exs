@@ -4,7 +4,7 @@ defmodule Drawtoo.Repo.Migrations.CreateCanvases do
   def change do
     create table(:canvases, primary_key: false) do
       add :id, :binary_id, primary_key: true
-      add :strokes, {:array, :map}
+      add :strokes, :jsonb, default: "[]"
       add :game_id, references(:games, on_delete: :nothing, type: :binary_id)
 
       timestamps()
